@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Appointment;
 import model.Patient;
-import model.Person;
+import model.Patient;
 
 /**
  * FXML Controller class
@@ -44,17 +44,17 @@ public class FXMLPacientesController implements Initializable {
     @FXML
     private Button btnDel;
     @FXML
-    private TableColumn<Person, String> dniColumn;
+    private TableColumn<Patient, String> dniColumn;
     @FXML
-    private TableColumn<Person, String> nameColumn;
+    private TableColumn<Patient, String> nameColumn;
     @FXML
-    private TableColumn<Person, LocalDate> ageColumn;
+    private TableColumn<Patient, LocalDate> ageColumn;
     @FXML
-    private TableColumn<Person, Image> pictureColumn;
+    private TableColumn<Patient, Image> pictureColumn;
     @FXML
-    private TableColumn<Person, String> phoneColumn;
+    private TableColumn<Patient, String> phoneColumn;
     @FXML
-    private TableView<Person> tvPacientes;
+    private TableView<Patient> tvPacientes;
     private EntregableIPC app;
     private Stage primaryStage;
     @FXML
@@ -70,8 +70,8 @@ public class FXMLPacientesController implements Initializable {
         nameColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
         phoneColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTelephon()));
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("fechadealta"));
-        ageColumn.setCellFactory((TableColumn<Person, LocalDate> column) -> {
-            return new TableCell<Person, LocalDate>() {
+        ageColumn.setCellFactory((TableColumn<Patient, LocalDate> column) -> {
+            return new TableCell<Patient, LocalDate>() {
                 @Override
                 protected void updateItem(LocalDate item, boolean empty) {
                     super.updateItem(item, empty);
@@ -86,8 +86,8 @@ public class FXMLPacientesController implements Initializable {
         });
 
         pictureColumn.setCellValueFactory(new PropertyValueFactory<>("foto"));
-        pictureColumn.setCellFactory((TableColumn<Person, Image> column) -> {
-            return new TableCell<Person, Image>() {
+        pictureColumn.setCellFactory((TableColumn<Patient, Image> column) -> {
+            return new TableCell<Patient, Image>() {
 
                 protected void updateItem(javafx.scene.image.Image item, boolean empty) {
                     setText(null);
@@ -107,7 +107,7 @@ public class FXMLPacientesController implements Initializable {
         this.app = app;
     }
 
-    public void initStage(Stage stage, ObservableList<Person> paciente) {
+    public void initStage(Stage stage, ObservableList<Patient> paciente) {
         this.primaryStage = stage;
         this.tvPacientes.setItems(paciente);
     }
@@ -128,7 +128,7 @@ public class FXMLPacientesController implements Initializable {
     private void buscarPaciente(ActionEvent event) {
     }
 
-//    private class TableCellImpl extends TableCell<Person, javafx.scene.image.Image> {
+//    private class TableCellImpl extends TableCell<Patient, javafx.scene.image.Image> {
 //
 //        public TableCellImpl() {
 //        }
