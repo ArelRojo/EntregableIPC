@@ -143,4 +143,16 @@ public class EntregableIPC extends Application {
 
     }
 
+    public void goToAddCita() throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddCita.fxml"));
+        FXMLAddMedicoController addCcontrolador = loader.getController();
+        Parent root = (Parent) loader.load();
+        Stage estageActual = new Stage();
+        Scene scene = new Scene(root);
+        estageActual.setScene(scene);
+        estageActual.initModality(Modality.APPLICATION_MODAL);
+        estageActual.showAndWait();
+       
+    }
+
 }
