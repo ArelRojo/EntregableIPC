@@ -41,8 +41,8 @@ public class EntregableIPC extends Application {
     public VBox vbroot;
     private mainController controladormenu;
     ClinicDBAccess clinicDBAccess = ClinicDBAccess.getSingletonClinicDBAccess();
-    private final ObservableList<Patient> pacientes = FXCollections.observableList(clinicDBAccess.getPatients());
-    private final ObservableList<Appointment> citas = FXCollections.observableList(clinicDBAccess.getAppointments());
+//    private final ObservableList<Patient> pacientes = FXCollections.observableList(clinicDBAccess.getPatients());
+//    private final ObservableList<Appointment> citas = FXCollections.observableList(clinicDBAccess.getAppointments());
     private ObservableObjectValue<Clinic> clinica;
     private ObservableList<Doctor> medico;
     private ObservableList<Patient> paciente;
@@ -110,13 +110,21 @@ public class EntregableIPC extends Application {
         stage.setTitle("Médicos");
     }
 
-    public void goToCitas() throws Exception {
+    public void goToCitas() throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLCitas.fxml"));
         this.vbroot.getChildren().remove(1);
         this.vbroot.getChildren().add((BorderPane) loader.load());
         FXMLCitasController citasController = loader.getController();
+//        Parent root = (Parent) loader.load();
+//        Stage estageActual = new Stage();
+//        Scene scene = new Scene(root);
+//        estageActual.setScene(scene);
+//        estageActual.initModality(Modality.APPLICATION_MODAL);
+//        estageActual.showAndWait();
+
         citasController.setApp(this);
-        citasController.initStage(stage, this.citas);
+
+      citasController.initStage(stage, this.cita);
         stage.setTitle("Citas");
     }
 

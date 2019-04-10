@@ -5,6 +5,7 @@
  */
 package controller;
 
+import DBAccess.ClinicDBAccess;
 import app.EntregableIPC;
 import java.net.URL;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -131,11 +133,15 @@ public class FXMLMedicosController implements Initializable {
         } catch (Exception e) {
         }
     }
-    private ObservableList<Doctor> datos;
+    private ObservableList<Doctor> medico;
 
     @FXML
     private void delMedico(ActionEvent event) {
-        int i = tvMedicos.getSelectionModel().getSelectedIndex();
-    	if (i>=0) datos.remove(i);
+        ClinicDBAccess mismedicos = ClinicDBAccess.getSingletonClinicDBAccess();
+         this.medico = FXCollections.observableList(mismedicos.getDoctors()) ; 
+         tvMedicos.setItems(medico);
+            int i =  tvMedicos.getSelectionModel().getSelectedIndex(); //elemento seleccionado
+            if(i>-1) medico.remove(i);//lo borra de la lista
+            tvMedicos.getSelectionModel().clearSelection();
     }
 }

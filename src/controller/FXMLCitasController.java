@@ -14,8 +14,34 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Appointment;
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.css.PseudoClass;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -31,6 +57,8 @@ public class FXMLCitasController implements Initializable {
     private TableView<Appointment> tvCitas;
     private EntregableIPC app;
     private Stage primaryStage;
+    @FXML
+    private GridPane calendarView;
 
     /**
      * Initializes the controller class.
@@ -64,6 +92,6 @@ public class FXMLCitasController implements Initializable {
             this.app.goToAddCita();
         } catch (Exception e) {
         }
-    }
+    }	
     
 }
