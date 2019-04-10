@@ -25,7 +25,6 @@ public class FXMLAddPacienteController implements Initializable {
     private TextField tfDNI;
     @FXML
     private TextField tfName;
-    @FXML
     private TextField tfAge;
   
     @FXML

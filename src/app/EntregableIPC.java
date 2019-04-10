@@ -20,6 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -45,6 +46,7 @@ public class EntregableIPC extends Application {
     private ObservableObjectValue<Clinic> clinica;
     private ObservableList<Doctor> medico;
     private ObservableList<Patient> paciente;
+    private ObservableList<Appointment> cita;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -66,6 +68,9 @@ public class EntregableIPC extends Application {
         ClinicDBAccess dao = ClinicDBAccess.getSingletonClinicDBAccess();
         this.paciente = FXCollections.observableList(dao.getPatients());
         this.medico = FXCollections.observableList(dao.getDoctors());
+        this.cita = FXCollections.observableList(dao.getAppointments());
+       
+        
         stage.show();
     }
 

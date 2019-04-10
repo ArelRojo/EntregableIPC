@@ -9,6 +9,7 @@ import app.EntregableIPC;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -55,6 +56,14 @@ public class FXMLCitasController implements Initializable {
     public void initStage(Stage stage, ObservableList<Appointment> citas) {
         this.primaryStage = stage;
         this.tvCitas.setItems(citas);
+    }
+
+    @FXML
+    private void b_AddCita(ActionEvent event) {
+        try {
+            this.app.goToAddCita();
+        } catch (Exception e) {
+        }
     }
     
 }

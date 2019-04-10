@@ -11,7 +11,7 @@
    <top>
       <HBox alignment="CENTER" minHeight="50.0" spacing="20.0" style="-fx-background-color: c0eff4;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btAdd" mnemonicParsing="false" text="Añadir" />
+            <Button fx:id="btAdd" mnemonicParsing="false" onAction="#b_AddCita" text="Añadir" />
             <Button fx:id="btDel" mnemonicParsing="false" text="Borrar" />
          </children>
       </HBox>
