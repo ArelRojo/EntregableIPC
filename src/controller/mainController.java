@@ -61,7 +61,7 @@ public class mainController implements Initializable {
 
     @FXML
     private void CitasPressed(ActionEvent event) throws Exception {
-        this.app.goToCitas();
+        this.app.goToCalendario();
     }
 
     

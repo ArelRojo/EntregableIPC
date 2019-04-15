@@ -8,11 +8,10 @@ package app;
 import DBAccess.ClinicDBAccess;
 import controller.FXMLAddMedicoController;
 import controller.FXMLAddPacienteController;
-import controller.FXMLCitasController;
+import controller.FXMLCalendarioController;
 import controller.FXMLMedicosController;
 import controller.FXMLPacientesController;
 import controller.mainController;
-import java.util.List;
 import javafx.application.Application;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
@@ -20,7 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -29,7 +28,6 @@ import model.Appointment;
 import model.Clinic;
 import model.Doctor;
 import model.Patient;
-import model.Person;
 
 /**
  *
@@ -46,7 +44,8 @@ public class EntregableIPC extends Application {
     private ObservableObjectValue<Clinic> clinica;
     private ObservableList<Doctor> medico;
     private ObservableList<Patient> paciente;
-    private ObservableList<Appointment> cita;
+ 
+    private ObservableList<Appointment> calendario;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -68,7 +67,7 @@ public class EntregableIPC extends Application {
         ClinicDBAccess dao = ClinicDBAccess.getSingletonClinicDBAccess();
         this.paciente = FXCollections.observableList(dao.getPatients());
         this.medico = FXCollections.observableList(dao.getDoctors());
-        this.cita = FXCollections.observableList(dao.getAppointments());
+        this.calendario = FXCollections.observableList(dao.getAppointments());
        
         
         stage.show();
@@ -110,11 +109,11 @@ public class EntregableIPC extends Application {
         stage.setTitle("Médicos");
     }
 
-    public void goToCitas() throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLCitas.fxml"));
+    public void goToCalendario() throws Exception{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Calendario.fxml"));
         this.vbroot.getChildren().remove(1);
         this.vbroot.getChildren().add((BorderPane) loader.load());
-        FXMLCitasController citasController = loader.getController();
+        FXMLCalendarioController CalendarioController = loader.getController();
 //        Parent root = (Parent) loader.load();
 //        Stage estageActual = new Stage();
 //        Scene scene = new Scene(root);
@@ -122,9 +121,9 @@ public class EntregableIPC extends Application {
 //        estageActual.initModality(Modality.APPLICATION_MODAL);
 //        estageActual.showAndWait();
 
-        citasController.setApp(this);
+        CalendarioController.setApp(this);
 
-      citasController.initStage(stage, this.cita);
+      CalendarioController.initStage(stage, this.calendario);
         stage.setTitle("Citas");
     }
 
