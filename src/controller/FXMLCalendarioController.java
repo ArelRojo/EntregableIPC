@@ -5,81 +5,96 @@
  */
 package controller;
 
-import DBAccess.ClinicDBAccess;
+import app.DiaCelda;
 import app.EntregableIPC;
-import java.awt.BorderLayout;
+import com.sun.javafx.scene.control.skin.DatePickerSkin;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Appointment;
+import model.Doctor;
 
 /**
  * FXML Controller class
  *
- * @author lisa
+ * @author thepu
  */
 public class FXMLCalendarioController implements Initializable {
 
     private EntregableIPC app;
     private Stage primaryStage;
-    
     @FXML
     private Button addButton;
     @FXML
-     DatePicker datePicker;
+    private DatePicker datePicker;
     @FXML
-    TextField tf_descripcion;
-    @FXML
-     ListView<Appointment> lv_citas;
-    
-    ClinicDBAccess list = ClinicDBAccess.getSingletonClinicDBAccess();
-    private ObservableList<Appointment> citas = FXCollections.observableList(list.getAppointments());
-   
-    private LocalDate date;
+    private TextField tf_descripcion;
     @FXML
     private TextField tf_doctor;
     @FXML
     private TextField tf_paciente;
-    
-   
+    @FXML
+    private TextField tf_paciente1;
+    @FXML
+    private Pane paneCalendar;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        datePicker.setValue(LocalDate.now());
-               
-     
+        // TODO
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Calendario.fxml"));
+        BorderPane contenedor;
+        try {
+            contenedor = (BorderPane) loader.load();
+            ObservableList<Node> os = contenedor.getChildren();
+            SplitPane sp = (SplitPane) os.get(0);
+            Pane panel = (Pane) sp.getItems().get(1);
+
+            DatePicker datePicker = new DatePicker(LocalDate.now());
+            datePicker.setShowWeekNumbers(false);
+            datePicker.setDayCellFactory(cel -> new DiaCelda());
+
+            DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
+            Node popupContent = datePickerSkin.getPopupContent();
+            panel.getChildren().add(popupContent);
+          //  contenedor.setBottom(popupContent);
+          this.primaryStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLCalendarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
-     public void initStage(Stage stage, ObservableList<Appointment> calendario) {
-        this.primaryStage = stage;
-        this.lv_citas.setItems(calendario);
-    }
-  
-    
-     public void setApp(EntregableIPC app) {
+    public void setApp(EntregableIPC app) {
         this.app = app;
+    }
+
+    public void initStage(Stage stage, ObservableList<Doctor> medico) {
+        this.primaryStage = stage;
+
     }
 
     @FXML
     private void addEvent(ActionEvent event) {
-
-        
     }
-    
 
-  
 }

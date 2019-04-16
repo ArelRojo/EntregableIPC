@@ -12,25 +12,33 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.Days;
 import model.Doctor;
 import model.ExaminationRoom;
+import model.Patient;
+import model.Person;
 
 /**
  * FXML Controller class
@@ -39,78 +47,115 @@ import model.ExaminationRoom;
  */
 public class FXMLMedicosController implements Initializable {
 
+    //Declaramos los textfield
+     @FXML
+    private TextField tfNombre;
     @FXML
-    private Button btAdd;
+    private TextField tfApellidos;
+    @FXML
+    private TextField tfDNI;
+    @FXML
+    private TextField tfDays;
+    @FXML
+    private TextField tfSala;
+    @FXML
+    private TextField tfTelef;
+    
+    //Declaramos las tablas y las columnas
+     @FXML
+    private TableView<Doctor> tvMedicos;
+     @FXML
+    private TableColumn<Doctor, String> nomColumn;
+    @FXML
+    private TableColumn<Doctor, String> cognColumn;
+    @FXML
+    private TableColumn<Doctor, String> idColumn;
+    @FXML
+    private TableColumn<Doctor, Days> daysColumn;
+    @FXML
+    private TableColumn<Doctor, ExaminationRoom> roomColumn;
+    @FXML
+    private TableColumn<Doctor, String> telColumn;
+    
+    //Botones
+    
     @FXML
     private Button btDel;
-    @FXML
-    private TableView<Doctor> tvMedicos;
-    @FXML
-    private TableColumn<Doctor, String> doctorName;
-    @FXML
-    private TableColumn<Doctor, String> doctorSurname;
-    @FXML
-    private TableColumn<Doctor, String> doctorDNI;
-    @FXML
-    private TableColumn<Doctor, LocalTime> horaIni;
-    @FXML
-    private TableColumn<Doctor, LocalTime> horaFin;
-    @FXML
-    private TableColumn<Doctor,LocalDate > dayColumn;
-    @FXML
-    private TableColumn<Doctor, ArrayList<Days>> diasSemana;
-    @FXML
-    private TableColumn<Doctor, ExaminationRoom> salaColumn;
+     @FXML
+    private Button addButton;
+   
+    
     private EntregableIPC app;
     public Stage primaryStage;
-    @FXML
-    private TextField tf_buscarMedico;
-    
+    private ObservableList<Doctor> medico;
+     private int pos;
+   
+   
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ClinicDBAccess mismedicos = ClinicDBAccess.getSingletonClinicDBAccess();
+        this.medico = FXCollections.observableList(mismedicos.getDoctors()) ; 
+        tvMedicos.setItems(medico);
        
-        doctorDNI.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIdentifier()));
-        doctorName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
-        doctorSurname.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname()));
-        horaIni.setCellValueFactory(new PropertyValueFactory<>("horaIniciodeTurno"));
-        horaIni.setCellFactory((TableColumn<Doctor, LocalTime> column) -> {
-            return new TableCell<Doctor, LocalTime>() {
-                
-                protected void updateItem(LocalTime item, boolean empty) {
-                   
-                    if (item == null || empty) {
-                        setText(null);
-                    } else {
-                        setText(item.format(DateTimeFormatter.ofPattern("hh:mm")));
-                    }
-                }
-            };
-
-        });
-        horaFin.setCellValueFactory(new PropertyValueFactory<>("horaIniciodeTurno"));
-        horaFin.setCellFactory((TableColumn<Doctor, LocalTime> column) -> {
-            return new TableCell<Doctor, LocalTime>() {
-                
-                protected void updateItem(LocalTime item, boolean empty) {
-                   
-                    if (item == null || empty) {
-                        setText(null);
-                    } else {
-                        setText(item.format(DateTimeFormatter.ofPattern("hh:mm")));
-                    }
-                }
-            };
-
-        });
-//        diasSemana.setCellValueFactory((TableColumn.CellDataFeatures<Doctor, ArrayList<Days>> c) -> {
-//            return new SimpleStringProperty(c.getValue().getVisitDays());
+        idColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIdentifier()));
+        nomColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
+        cognColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname()));
+        telColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTelephon()));
+        roomColumn.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getExaminationRoom()));
+//        horaIni.setCellValueFactory(new PropertyValueFactory<>("horaIniciodeTurno"));
+//        horaIni.setCellFactory((TableColumn<Doctor, LocalTime> column) -> {
+//            return new TableCell<Doctor, LocalTime>() {
+//                
+//                protected void updateItem(LocalTime item, boolean empty) {
+//                   
+//                    if (item == null || empty) {
+//                        setText(null);
+//                    } else {
+//                        setText(item.format(DateTimeFormatter.ofPattern("hh:mm")));
+//                    }
+//                }
+//            };
+//
+//        });
+//        horaFin.setCellValueFactory(new PropertyValueFactory<>("horaIniciodeTurno"));
+//        horaFin.setCellFactory((TableColumn<Doctor, LocalTime> column) -> {
+//            return new TableCell<Doctor, LocalTime>() {
+//                
+//                protected void updateItem(LocalTime item, boolean empty) {
+//                   
+//                    if (item == null || empty) {
+//                        setText(null);
+//                    } else {
+//                        setText(item.format(DateTimeFormatter.ofPattern("hh:mm")));
+//                    }
+//                }
+//            };
+//
 //        });
         
-        BooleanBinding noPatientSelected = Bindings.isEmpty(tvMedicos.getSelectionModel().getSelectedItems());
-        this.btDel.disableProperty().bind(noPatientSelected);
+//        fotoColumn.setCellValueFactory(new PropertyValueFactory<>("foto"));
+//        fotoColumn.setCellFactory((TableColumn<Doctor, Image> column) -> {
+//            return new TableCell<Doctor, Image>() {
+//
+//                protected void updateItem(Image item, boolean empty) {
+//                    setText(null);
+//                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+//                    ImageView imageView = new ImageView(item);
+//                    imageView.setFitHeight(40);
+//                    imageView.setFitWidth(40);
+//                    setGraphic(imageView);
+//                }
+//            };
+//        });
+        
+    final ObservableList<Doctor> tablaDocSel = tvMedicos.getSelectionModel().getSelectedItems();
+    tablaDocSel.addListener(selectorTablaDoctor);
+        
+        BooleanBinding noDoctorSelected = Bindings.isEmpty(tvMedicos.getSelectionModel().getSelectedItems());
+        this.btDel.disableProperty().bind(noDoctorSelected);
     }    
     public void setApp(EntregableIPC app) {
         this.app = app;
@@ -122,26 +167,64 @@ public class FXMLMedicosController implements Initializable {
         
     }
 
-    @FXML
-    private void buscarMedicoPressed(ActionEvent event) {
-    }
 
     @FXML
     private void AddMedico(ActionEvent event) {
-        try {
-            this.app.goToAddMedico();
-        } catch (Exception e) {
-        }
+//        ClinicDBAccess mispersonas = ClinicDBAccess.getSingletonClinicDBAccess();
+//        this.medico = FXCollections.observableList(mispersonas.getDoctors()) ; 
+//        tvMedicos.setItems(medico);
+      Doctor persona = new Doctor();
+      persona.setName(tfNombre.getText());
+      persona.setSurname(tfApellidos.getText());
+      persona.setIdentifier(tfDNI.getText());
+      persona.setTelephon(tfTelef.getText());
+      medico.add(persona);
+     
+   
+              
+      
     }
-    private ObservableList<Doctor> medico;
+    
 
     @FXML
     private void delMedico(ActionEvent event) {
-        ClinicDBAccess mismedicos = ClinicDBAccess.getSingletonClinicDBAccess();
-         this.medico = FXCollections.observableList(mismedicos.getDoctors()) ; 
-         tvMedicos.setItems(medico);
-            int i =  tvMedicos.getSelectionModel().getSelectedIndex(); //elemento seleccionado
-            if(i>-1) medico.remove(i);//lo borra de la lista
+        
+            pos =  tvMedicos.getSelectionModel().getSelectedIndex(); //elemento seleccionado
+            if(pos>-1) medico.remove(pos);//lo borra de la lista
             tvMedicos.getSelectionModel().clearSelection();
     }
+    private final ListChangeListener<Doctor> selectorTablaDoctor = 
+            new ListChangeListener<Doctor>(){
+                @Override
+                public void onChanged(ListChangeListener.Change<? extends Doctor> c){
+                    ponerMedicoSeleccionado();
+                }
+            };
+    public Doctor getTablaMedicosSeleccionados(){
+        if(tvMedicos != null){
+            List<Doctor> tabla = tvMedicos.getSelectionModel().getSelectedItems();
+            if(tabla.size() == 1){
+                final Doctor competicionSeleccionada = tabla.get(0);
+                return competicionSeleccionada;
+            
+            }
+        
+        }
+        return null;
+    
+    }
+
+        
+    private void ponerMedicoSeleccionado() {
+        final Doctor persona = getTablaMedicosSeleccionados();
+        pos = medico.indexOf(persona);
+        if(persona != null){
+            tfNombre.setText(persona.getName());
+            tfApellidos.setText(persona.getSurname());
+            tfDNI.setText(persona.getIdentifier());
+            tfTelef.setText(persona.getTelephon());
+        
+        }
+         }
+    
 }

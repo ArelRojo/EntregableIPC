@@ -89,20 +89,32 @@ public class EntregableIPC extends Application {
 
     }
 
-    public void goToPacientes() throws Exception {
+//    public void goToPacientes() throws Exception {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Pacientes.fxml"));
+//        this.vbroot.getChildren().remove(1);
+//        this.vbroot.getChildren().add((BorderPane) loader.load());
+//        FXMLPacientesController pacienteController = loader.getController();
+//        pacienteController.setApp(this);
+//        pacienteController.initStage(stage, this.paciente);
+//        stage.setTitle("Pacientes");
+//    }
+    
+    public void goToPacientes() throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLPacientes.fxml"));
         this.vbroot.getChildren().remove(1);
-        this.vbroot.getChildren().add((BorderPane) loader.load());
-        FXMLPacientesController pacienteController = loader.getController();
+        this.vbroot.getChildren().add((AnchorPane)loader.load());
+        FXMLPacientesController pacienteController =loader.getController();
         pacienteController.setApp(this);
         pacienteController.initStage(stage, this.paciente);
         stage.setTitle("Pacientes");
+    
+    
     }
 
     public void goToMedicos() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLMedicos.fxml"));
         this.vbroot.getChildren().remove(1);
-        this.vbroot.getChildren().add((BorderPane) loader.load());
+        this.vbroot.getChildren().add((AnchorPane) loader.load());
         FXMLMedicosController medicosController = loader.getController();
         medicosController.setApp(this);
         medicosController.initStage(stage, this.medico);
@@ -123,32 +135,32 @@ public class EntregableIPC extends Application {
 
         CalendarioController.setApp(this);
 
-      CalendarioController.initStage(stage, this.calendario);
+      CalendarioController.initStage(stage, this.medico);
         stage.setTitle("Citas");
     }
 
-    public void goToAddPaciente() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddPaciente.fxml"));
-        FXMLAddPacienteController addcontrolador = loader.getController();
-        Parent root = (Parent) loader.load();
-        Stage estageActual = new Stage();
-        Scene scene = new Scene(root);
-        estageActual.setScene(scene);
-        estageActual.initModality(Modality.APPLICATION_MODAL);
-        estageActual.showAndWait();
-    }
+//    public void goToAddPaciente() throws Exception {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddPaciente.fxml"));
+//        FXMLAddPacienteController addcontrolador = loader.getController();
+//        Parent root = (Parent) loader.load();
+//        Stage estageActual = new Stage();
+//        Scene scene = new Scene(root);
+//        estageActual.setScene(scene);
+//        estageActual.initModality(Modality.APPLICATION_MODAL);
+//        estageActual.showAndWait();
+//    }
 
-    public void goToAddMedico() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddMedico.fxml"));
-        FXMLAddMedicoController addMcontrolador = loader.getController();
-        Parent root = (Parent) loader.load();
-        Stage estageActual = new Stage();
-        Scene scene = new Scene(root);
-        estageActual.setScene(scene);
-        estageActual.initModality(Modality.APPLICATION_MODAL);
-        estageActual.showAndWait();
-
-    }
+//    public void goToAddMedico() throws Exception {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddMedico.fxml"));
+//        FXMLAddMedicoController addMcontrolador = loader.getController();
+//        Parent root = (Parent) loader.load();
+//        Stage estageActual = new Stage();
+//        Scene scene = new Scene(root);
+//        estageActual.setScene(scene);
+//        estageActual.initModality(Modality.APPLICATION_MODAL);
+//        estageActual.showAndWait();
+//
+//    }
 
     public void goToAddCita() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddCita.fxml"));

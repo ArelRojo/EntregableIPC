@@ -1,55 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FXMLMedicosController">
-   <center>
-      <AnchorPane BorderPane.alignment="CENTER">
-         <children>
-            <TableView fx:id="tvMedicos" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <columns>
-                <TableColumn fx:id="doctorName" prefWidth="75.0" text="Nombre" />
-                <TableColumn fx:id="doctorSurname" prefWidth="75.0" text="Apellido" />
-                  <TableColumn fx:id="doctorDNI" prefWidth="75.0" text="DNI" />
-                  <TableColumn fx:id="horaIni" prefWidth="75.0" text="Hora inicio" />
-                  <TableColumn fx:id="horaFin" prefWidth="75.0" text="Hora fin" />
-                  <TableColumn fx:id="dayColumn" prefWidth="75.0" text="Fecha" />
-                  <TableColumn fx:id="diasSemana" prefWidth="75.0" text="Dias de la semana" />
-                  <TableColumn fx:id="salaColumn" prefWidth="75.0" text="Sala" />
-              </columns>
-            </TableView>
-         </children>
-      </AnchorPane>
-   </center>
-   <top>
-      <HBox alignment="CENTER" minHeight="50.0" spacing="20.0" style="-fx-background-color: c0eff4;" BorderPane.alignment="CENTER">
-         <children>
-            <TextField fx:id="tf_buscarMedico" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="273.0">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </TextField>
-            <Button mnemonicParsing="false" onAction="#buscarMedicoPressed" text="Buscar" />
-            <Button fx:id="btAdd" mnemonicParsing="false" onAction="#AddMedico" text="Añadir" />
-            <Button fx:id="btDel" mnemonicParsing="false" onAction="#delMedico" text="Borrar" />
-         </children>
-      </HBox>
-   </top>
-   <left>
-      <AnchorPane prefWidth="20.0" style="-fx-background-color: c0eff4;" BorderPane.alignment="CENTER" />
-   </left>
-   <right>
-      <AnchorPane prefWidth="20.0" style="-fx-background-color: c0eff4;" BorderPane.alignment="CENTER" />
-   </right>
-   <bottom>
-      <VBox prefHeight="20.0" style="-fx-background-color: c0eff4;" BorderPane.alignment="CENTER" />
-   </bottom>
-</BorderPane>
+<AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FXMLMedicosController">
+   <children>
+      <TableView fx:id="tvMedicos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="597.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="203.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="nomColumn" prefWidth="75.0" text="Nombre" />
+          <TableColumn fx:id="cognColumn" prefWidth="100.0" text="Apellidos" />
+            <TableColumn fx:id="idColumn" prefWidth="100.0" text="DNI" />
+            <TableColumn fx:id="daysColumn" prefWidth="131.0" text="Días de la semana" />
+            <TableColumn fx:id="roomColumn" prefWidth="81.0" text="Sala" />
+            <TableColumn fx:id="telColumn" prefWidth="107.0" text="Teléfono" />
+        </columns>
+      </TableView>
+      <Separator layoutX="594.0" orientation="VERTICAL" prefHeight="800.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="594.0" AnchorPane.topAnchor="0.0" />
+      <Text layoutX="600.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre: " wrappingWidth="62.13671875">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfNombre" layoutX="600.0" layoutY="31.0" prefHeight="29.0" prefWidth="195.0" />
+      <Text layoutX="600.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellidos:" wrappingWidth="72.13671875">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfApellidos" layoutX="600.0" layoutY="80.0" prefHeight="29.0" prefWidth="195.0" />
+      <Text layoutX="600.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI:" wrappingWidth="62.13671875">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfDNI" layoutX="600.0" layoutY="129.0" prefHeight="29.0" prefWidth="195.0" />
+      <Text layoutX="600.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono:" wrappingWidth="62.13671875">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfTelef" layoutX="600.0" layoutY="178.0" prefHeight="29.0" prefWidth="195.0" />
+      <Button fx:id="addButton" layoutX="605.0" layoutY="323.0" mnemonicParsing="false" onAction="#AddMedico" prefHeight="25.0" prefWidth="189.0" text="Añadir" />
+      <Button fx:id="btDel" layoutX="605.0" layoutY="361.0" mnemonicParsing="false" onAction="#delMedico" prefHeight="25.0" prefWidth="189.0" text="Eliminar" />
+      <Text layoutX="600.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Días de la semana:" wrappingWidth="170.13671875">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfDays" layoutX="600.0" layoutY="228.0" prefHeight="29.0" prefWidth="195.0" />
+      <Text layoutX="600.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sala:" wrappingWidth="170.13671875">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfSala" layoutX="600.0" layoutY="278.0" prefHeight="29.0" prefWidth="195.0" />
+   </children>
+</AnchorPane>

@@ -2,16 +2,16 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ * FXML Controller class
+ *
+ * @author lisas
  */
 package controller;
-
 import DBAccess.ClinicDBAccess;
 import app.EntregableIPC;
 import java.awt.Image;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -30,43 +30,51 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import model.Appointment;
-import model.Patient;
-import model.Patient;
-import model.Person;
 
-/**
- * FXML Controller class
- *
- * @author lisas
- */
+import model.Patient;
+
+
+
 public class FXMLPacientesController implements Initializable {
-
-    @FXML
-    private Button btnAdd;
-    @FXML
+    //botones
     private Button btnDel;
     @FXML
-    private TableColumn<Patient, String> dniColumn;
+    private Button addButton;
     @FXML
-    private TableColumn<Patient, String> nameColumn;
-    @FXML
-    private TableColumn<Patient, LocalDate> ageColumn;
-    @FXML
-    private TableColumn<Patient, Image> pictureColumn;
-    @FXML
-    private TableColumn<Patient, String> phoneColumn;
-    @FXML
+    private Button btDel;
+    //tabl
+     @FXML
     private TableView<Patient> tvPacientes;
+     @FXML
+    private TableColumn<Patient, String> nomColumn;
+    @FXML
+    private TableColumn<Patient, String> cognColumn;
+    @FXML
+    private TableColumn<Patient, String> idColumn;
+    @FXML
+    private TableColumn<Patient, String> telColumn;
+    @FXML
+    private TableColumn<Patient, Image> fotoColumn;
+    //textfields
+    @FXML
+    private TextField tfNombre;
+    @FXML
+    private TextField tfApellidos;
+    @FXML
+    private TextField tfDNI;
+    @FXML
+    private TextField tfTelef;
+    
+   
     private EntregableIPC app;
     private Stage primaryStage;
-    @FXML
-    private TextField PacienteABuscar;
     private ObservableList<Patient> paciente;
+ 
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -75,27 +83,12 @@ public class FXMLPacientesController implements Initializable {
         tvPacientes.setItems(paciente);
         
 
-        dniColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIdentifier()));
-        nameColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
-        phoneColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTelephon()));
-        ageColumn.setCellValueFactory(new PropertyValueFactory<>("fechadenacimiento"));
-        ageColumn.setCellFactory((TableColumn<Patient, LocalDate> column) -> {
-            return new TableCell<Patient, LocalDate>() {
-                @Override
-                protected void updateItem(LocalDate item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item == null || empty) {
-                        setText(null);
-                    } else {
-                        setText(item.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                    }
-                }
-            };
-
-        });
-
-        pictureColumn.setCellValueFactory(new PropertyValueFactory<>("foto"));
-        pictureColumn.setCellFactory((TableColumn<Patient, Image> column) -> {
+        idColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIdentifier()));
+        nomColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
+        cognColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname()));
+        telColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTelephon()));
+        fotoColumn.setCellValueFactory(new PropertyValueFactory<>("foto"));
+        fotoColumn.setCellFactory((TableColumn<Patient, Image> column) -> {
             return new TableCell<Patient, Image>() {
 
                 protected void updateItem(javafx.scene.image.Image item, boolean empty) {
@@ -122,11 +115,7 @@ public class FXMLPacientesController implements Initializable {
     }
 
     @FXML
-    private void addPacientePressed(ActionEvent event) {
-        try {
-            this.app.goToAddPaciente();
-        } catch (Exception e) {
-        }
+    private void AddPaciente(ActionEvent event) {
     }
 
     @FXML
@@ -138,24 +127,4 @@ public class FXMLPacientesController implements Initializable {
             if(i>-1) paciente.remove(i);//lo borra de la lista
             tvPacientes.getSelectionModel().clearSelection();
     }
-
-    @FXML
-    private void buscarPaciente(ActionEvent event) {
-    }
-
-//    private class TableCellImpl extends TableCell<Patient, javafx.scene.image.Image> {
-//
-//        public TableCellImpl() {
-//        }
-//
-//        @Override
-//        protected void updateItem(javafx.scene.image.Image item, boolean empty) {
-//            setText(null);
-//            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-//            ImageView imageView = new ImageView(item);
-//            imageView.setFitHeight(40);
-//            imageView.setFitWidth(40);
-//            setGraphic(imageView);
-//        }
-//    }
 }
