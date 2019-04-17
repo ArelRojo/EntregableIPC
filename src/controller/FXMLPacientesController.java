@@ -7,9 +7,9 @@
  * @author lisas
  */
 package controller;
+
 import DBAccess.ClinicDBAccess;
 import app.EntregableIPC;
-import java.awt.Image;
 import java.net.URL;
 
 import java.util.ResourceBundle;
@@ -28,24 +28,23 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import model.Patient;
 
-
-
 public class FXMLPacientesController implements Initializable {
     //botones
-    private Button btnDel;
+
     @FXML
     private Button addButton;
     @FXML
     private Button btDel;
     //tabl
-     @FXML
+    @FXML
     private TableView<Patient> tvPacientes;
-     @FXML
+    @FXML
     private TableColumn<Patient, String> nomColumn;
     @FXML
     private TableColumn<Patient, String> cognColumn;
@@ -64,34 +63,32 @@ public class FXMLPacientesController implements Initializable {
     private TextField tfDNI;
     @FXML
     private TextField tfTelef;
-    
-   
+
     private EntregableIPC app;
     private Stage primaryStage;
     private ObservableList<Patient> paciente;
- 
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ClinicDBAccess mispacientes = ClinicDBAccess.getSingletonClinicDBAccess();
-        this.paciente = FXCollections.observableList(mispacientes.getPatients()) ; 
+        this.paciente = FXCollections.observableList(mispacientes.getPatients());
         tvPacientes.setItems(paciente);
-        
 
         idColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIdentifier()));
         nomColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
         cognColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname()));
         telColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTelephon()));
-        fotoColumn.setCellValueFactory(new PropertyValueFactory<>("foto"));
-        fotoColumn.setCellFactory((TableColumn<Patient, Image> column) -> {
+        fotoColumn.setCellValueFactory(new PropertyValueFactory<>("photo"));
+        fotoColumn.setCellFactory(columna -> {
             return new TableCell<Patient, Image>() {
 
-                protected void updateItem(javafx.scene.image.Image item, boolean empty) {
+                protected void updateItem(Image item, boolean empty) {
                     setText(null);
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                     ImageView imageView = new ImageView(item);
@@ -102,7 +99,7 @@ public class FXMLPacientesController implements Initializable {
             };
         });
         BooleanBinding noPatientSelected = Bindings.isEmpty(tvPacientes.getSelectionModel().getSelectedItems());
-        this.btnDel.disableProperty().bind(noPatientSelected);
+        this.btDel.disableProperty().bind(noPatientSelected);
     }
 
     public void setApp(EntregableIPC app) {
@@ -116,15 +113,28 @@ public class FXMLPacientesController implements Initializable {
 
     @FXML
     private void AddPaciente(ActionEvent event) {
+        Patient paciente = new Patient();
+        paciente.setIdentifier(tfDNI.getText());
+        paciente.setName(tfNombre.getText());
+        paciente.setSurname(tfApellidos.getText());
+        paciente.setTelephon(tfTelef.getText());
+        //TODO falta añadir foto
+        this.paciente.add(paciente);
+        this.tvPacientes.refresh();
+        this.app.save();
     }
 
     @FXML
     private void delPacientePressed(ActionEvent event) {
-         ClinicDBAccess mispacientes = ClinicDBAccess.getSingletonClinicDBAccess();
-         this.paciente = FXCollections.observableList(mispacientes.getPatients()) ; 
-         tvPacientes.setItems(paciente);
-            int i =  tvPacientes.getSelectionModel().getSelectedIndex(); //elemento seleccionado
-            if(i>-1) paciente.remove(i);//lo borra de la lista
-            tvPacientes.getSelectionModel().clearSelection();
+        ClinicDBAccess mispacientes = ClinicDBAccess.getSingletonClinicDBAccess();
+        this.paciente = FXCollections.observableList(mispacientes.getPatients());
+        tvPacientes.setItems(paciente);
+        int i = tvPacientes.getSelectionModel().getSelectedIndex(); //elemento seleccionado
+        if (i > -1) {
+            paciente.remove(i);//lo borra de la lista
+        }
+        tvPacientes.getSelectionModel().clearSelection();
+        this.tvPacientes.refresh();
+        this.app.save();
     }
 }

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FXMLCalendarioController">
@@ -21,15 +25,29 @@
                   <TextField fx:id="tf_descripcion" layoutX="306.0" layoutY="21.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="102.0" prefWidth="455.0" promptText="Añadir descripción " />
                   <Separator layoutX="98.0" orientation="VERTICAL" prefHeight="67.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="98.0" AnchorPane.topAnchor="0.0" />
                   <Separator layoutX="290.0" orientation="VERTICAL" prefHeight="67.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="290.0" AnchorPane.topAnchor="0.0" />
-                  <TextField fx:id="tf_doctor" layoutX="110.0" layoutY="62.0" prefHeight="29.0" prefWidth="167.0" />
-                  <TextField fx:id="tf_paciente" layoutX="110.0" layoutY="102.0" prefHeight="29.0" prefWidth="168.0" />
                   <Text layoutX="10.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Médico" wrappingWidth="81.13671875" />
                   <Text layoutX="13.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Paciente" wrappingWidth="75.13671875" />
                   <Text layoutX="14.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hora" wrappingWidth="75.13671875" />
-                  <TextField fx:id="tf_paciente1" layoutX="110.0" layoutY="140.0" prefHeight="29.0" prefWidth="168.0" />
+                  <Label layoutX="187.0" layoutY="146.0" text=":" />
+                  <ChoiceBox fx:id="ddMedico" layoutX="112.0" layoutY="62.0" prefHeight="29.0" prefWidth="168.0" />
+                  <ChoiceBox fx:id="ddPaciente" layoutX="112.0" layoutY="102.0" prefHeight="29.0" prefWidth="168.0" />
+                  <ChoiceBox fx:id="ddHora" layoutX="112.0" layoutY="141.0" prefHeight="29.0" prefWidth="65.0" />
+                  <ChoiceBox fx:id="ddMinuto" layoutX="203.0" layoutY="140.0" prefHeight="29.0" prefWidth="65.0" />
                </children>
             </AnchorPane>
-            <Pane fx:id="paneCalendar" prefHeight="200.0" prefWidth="200.0" />
+            <VBox fx:id="vboxCalendar">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnSemanaAnterior" mnemonicParsing="false" onAction="#lastWeek" text="Semana Anterior" />
+                        <Button fx:id="btnSemanaSiguiente" mnemonicParsing="false" onAction="#nextWeek" text="Semana Siguiente">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </items>
       </SplitPane>
    </center>

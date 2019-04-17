@@ -12,6 +12,7 @@ import controller.FXMLCalendarioController;
 import controller.FXMLMedicosController;
 import controller.FXMLPacientesController;
 import controller.mainController;
+import java.util.List;
 import javafx.application.Application;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
@@ -44,7 +45,7 @@ public class EntregableIPC extends Application {
     private ObservableObjectValue<Clinic> clinica;
     private ObservableList<Doctor> medico;
     private ObservableList<Patient> paciente;
- 
+
     private ObservableList<Appointment> calendario;
 
     @Override
@@ -68,8 +69,7 @@ public class EntregableIPC extends Application {
         this.paciente = FXCollections.observableList(dao.getPatients());
         this.medico = FXCollections.observableList(dao.getDoctors());
         this.calendario = FXCollections.observableList(dao.getAppointments());
-       
-        
+
         stage.show();
     }
 
@@ -98,17 +98,15 @@ public class EntregableIPC extends Application {
 //        pacienteController.initStage(stage, this.paciente);
 //        stage.setTitle("Pacientes");
 //    }
-    
-    public void goToPacientes() throws Exception{
+    public void goToPacientes() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLPacientes.fxml"));
         this.vbroot.getChildren().remove(1);
-        this.vbroot.getChildren().add((AnchorPane)loader.load());
-        FXMLPacientesController pacienteController =loader.getController();
+        this.vbroot.getChildren().add((AnchorPane) loader.load());
+        FXMLPacientesController pacienteController = loader.getController();
         pacienteController.setApp(this);
         pacienteController.initStage(stage, this.paciente);
         stage.setTitle("Pacientes");
-    
-    
+
     }
 
     public void goToMedicos() throws Exception {
@@ -121,7 +119,7 @@ public class EntregableIPC extends Application {
         stage.setTitle("Médicos");
     }
 
-    public void goToCalendario() throws Exception{
+    public void goToCalendario() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Calendario.fxml"));
         this.vbroot.getChildren().remove(1);
         this.vbroot.getChildren().add((BorderPane) loader.load());
@@ -135,7 +133,7 @@ public class EntregableIPC extends Application {
 
         CalendarioController.setApp(this);
 
-      CalendarioController.initStage(stage, this.medico);
+        CalendarioController.initStage(stage, this.clinicDBAccess);
         stage.setTitle("Citas");
     }
 
@@ -149,7 +147,6 @@ public class EntregableIPC extends Application {
 //        estageActual.initModality(Modality.APPLICATION_MODAL);
 //        estageActual.showAndWait();
 //    }
-
 //    public void goToAddMedico() throws Exception {
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddMedico.fxml"));
 //        FXMLAddMedicoController addMcontrolador = loader.getController();
@@ -161,7 +158,6 @@ public class EntregableIPC extends Application {
 //        estageActual.showAndWait();
 //
 //    }
-
     public void goToAddCita() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddCita.fxml"));
         FXMLAddMedicoController addCcontrolador = loader.getController();
@@ -171,7 +167,11 @@ public class EntregableIPC extends Application {
         estageActual.setScene(scene);
         estageActual.initModality(Modality.APPLICATION_MODAL);
         estageActual.showAndWait();
-       
+
+    }
+
+    public void save() {
+        this.clinicDBAccess.saveDB();
     }
 
 }

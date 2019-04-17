@@ -48,7 +48,7 @@ import model.Person;
 public class FXMLMedicosController implements Initializable {
 
     //Declaramos los textfield
-     @FXML
+    @FXML
     private TextField tfNombre;
     @FXML
     private TextField tfApellidos;
@@ -60,11 +60,11 @@ public class FXMLMedicosController implements Initializable {
     private TextField tfSala;
     @FXML
     private TextField tfTelef;
-    
+
     //Declaramos las tablas y las columnas
-     @FXML
+    @FXML
     private TableView<Doctor> tvMedicos;
-     @FXML
+    @FXML
     private TableColumn<Doctor, String> nomColumn;
     @FXML
     private TableColumn<Doctor, String> cognColumn;
@@ -73,38 +73,35 @@ public class FXMLMedicosController implements Initializable {
     @FXML
     private TableColumn<Doctor, Days> daysColumn;
     @FXML
-    private TableColumn<Doctor, ExaminationRoom> roomColumn;
+    private TableColumn<Doctor, String> roomColumn;
     @FXML
     private TableColumn<Doctor, String> telColumn;
-    
+
     //Botones
-    
     @FXML
     private Button btDel;
-     @FXML
+    @FXML
     private Button addButton;
-   
-    
+
     private EntregableIPC app;
     public Stage primaryStage;
     private ObservableList<Doctor> medico;
-     private int pos;
-   
-   
+    private int pos;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ClinicDBAccess mismedicos = ClinicDBAccess.getSingletonClinicDBAccess();
-        this.medico = FXCollections.observableList(mismedicos.getDoctors()) ; 
+        this.medico = FXCollections.observableList(mismedicos.getDoctors());
         tvMedicos.setItems(medico);
-       
+
         idColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIdentifier()));
         nomColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
         cognColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname()));
         telColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTelephon()));
-        roomColumn.setCellValueFactory(c -> new SimpleObjectProperty<>(c.getValue().getExaminationRoom()));
+        roomColumn.setCellValueFactory(c -> new SimpleObjectProperty(c.getValue().getExaminationRoom().getIdentNumber()));
 //        horaIni.setCellValueFactory(new PropertyValueFactory<>("horaIniciodeTurno"));
 //        horaIni.setCellFactory((TableColumn<Doctor, LocalTime> column) -> {
 //            return new TableCell<Doctor, LocalTime>() {
@@ -135,7 +132,7 @@ public class FXMLMedicosController implements Initializable {
 //            };
 //
 //        });
-        
+
 //        fotoColumn.setCellValueFactory(new PropertyValueFactory<>("foto"));
 //        fotoColumn.setCellFactory((TableColumn<Doctor, Image> column) -> {
 //            return new TableCell<Doctor, Image>() {
@@ -150,81 +147,83 @@ public class FXMLMedicosController implements Initializable {
 //                }
 //            };
 //        });
-        
-    final ObservableList<Doctor> tablaDocSel = tvMedicos.getSelectionModel().getSelectedItems();
-    tablaDocSel.addListener(selectorTablaDoctor);
-        
+        final ObservableList<Doctor> tablaDocSel = tvMedicos.getSelectionModel().getSelectedItems();
+        tablaDocSel.addListener(selectorTablaDoctor);
+
         BooleanBinding noDoctorSelected = Bindings.isEmpty(tvMedicos.getSelectionModel().getSelectedItems());
         this.btDel.disableProperty().bind(noDoctorSelected);
-    }    
+    }
+
     public void setApp(EntregableIPC app) {
         this.app = app;
     }
-    
+
     public void initStage(Stage stage, ObservableList<Doctor> medico) {
         this.primaryStage = stage;
         this.tvMedicos.setItems(medico);
-        
-    }
 
+    }
 
     @FXML
     private void AddMedico(ActionEvent event) {
 //        ClinicDBAccess mispersonas = ClinicDBAccess.getSingletonClinicDBAccess();
 //        this.medico = FXCollections.observableList(mispersonas.getDoctors()) ; 
 //        tvMedicos.setItems(medico);
-      Doctor persona = new Doctor();
-      persona.setName(tfNombre.getText());
-      persona.setSurname(tfApellidos.getText());
-      persona.setIdentifier(tfDNI.getText());
-      persona.setTelephon(tfTelef.getText());
-      medico.add(persona);
-     
-   
-              
-      
+        Doctor persona = new Doctor();
+        persona.setName(tfNombre.getText());
+        persona.setSurname(tfApellidos.getText());
+        persona.setIdentifier(tfDNI.getText());
+        persona.setTelephon(tfTelef.getText());
+        medico.add(persona);
+        this.tvMedicos.refresh();
+        this.app.save();
+        
+
     }
-    
 
     @FXML
     private void delMedico(ActionEvent event) {
-        
-            pos =  tvMedicos.getSelectionModel().getSelectedIndex(); //elemento seleccionado
-            if(pos>-1) medico.remove(pos);//lo borra de la lista
-            tvMedicos.getSelectionModel().clearSelection();
+
+        pos = tvMedicos.getSelectionModel().getSelectedIndex(); //elemento seleccionado
+        if (pos > -1) {
+            medico.remove(pos);//lo borra de la lista
+        }
+        tvMedicos.getSelectionModel().clearSelection();
+        this.tvMedicos.refresh();
+        this.app.save();
     }
-    private final ListChangeListener<Doctor> selectorTablaDoctor = 
-            new ListChangeListener<Doctor>(){
-                @Override
-                public void onChanged(ListChangeListener.Change<? extends Doctor> c){
-                    ponerMedicoSeleccionado();
-                }
-            };
-    public Doctor getTablaMedicosSeleccionados(){
-        if(tvMedicos != null){
+    private final ListChangeListener<Doctor> selectorTablaDoctor
+            = new ListChangeListener<Doctor>() {
+        @Override
+        public void onChanged(ListChangeListener.Change<? extends Doctor> c) {
+            ponerMedicoSeleccionado();
+        }
+    };
+
+    public Doctor getTablaMedicosSeleccionados() {
+        if (tvMedicos != null) {
             List<Doctor> tabla = tvMedicos.getSelectionModel().getSelectedItems();
-            if(tabla.size() == 1){
+            if (tabla.size() == 1) {
                 final Doctor competicionSeleccionada = tabla.get(0);
                 return competicionSeleccionada;
-            
+
             }
-        
+
         }
         return null;
-    
+
     }
 
-        
     private void ponerMedicoSeleccionado() {
         final Doctor persona = getTablaMedicosSeleccionados();
         pos = medico.indexOf(persona);
-        if(persona != null){
+        if (persona != null) {
             tfNombre.setText(persona.getName());
             tfApellidos.setText(persona.getSurname());
             tfDNI.setText(persona.getIdentifier());
             tfTelef.setText(persona.getTelephon());
-        
+
         }
-         }
-    
+    }
+
 }
