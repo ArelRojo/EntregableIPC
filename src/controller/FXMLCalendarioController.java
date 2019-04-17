@@ -154,7 +154,7 @@ public class FXMLCalendarioController implements Initializable {
         
         this.ddMedico.getItems().addAll(this.dao.getDoctors());
         this.ddPaciente.getItems().addAll(this.dao.getPatients());
-        this.dao.get
+        
 
     }
 
