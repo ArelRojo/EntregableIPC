@@ -109,6 +109,7 @@ public class FXMLPacientesController implements Initializable {
     public void initStage(Stage stage, ObservableList<Patient> paciente) {
         this.primaryStage = stage;
         this.tvPacientes.setItems(paciente);
+         primaryStage.setResizable(false);
     }
 
     @FXML

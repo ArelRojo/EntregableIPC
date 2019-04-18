@@ -42,7 +42,8 @@ public class mainController implements Initializable {
     }
      
      public void initStage(Stage stage){
-        this.primaryStage = stage; 
+        this.primaryStage = stage;
+         primaryStage.setResizable(false);
     }
     @FXML
     private void irPrincipalPressed(ActionEvent event) throws Exception{
@@ -62,6 +63,11 @@ public class mainController implements Initializable {
     @FXML
     private void CitasPressed(ActionEvent event) throws Exception {
         this.app.goToCalendario();
+    }
+
+    @FXML
+    private void closeAction(ActionEvent event) {
+        primaryStage.close();
     }
 
     

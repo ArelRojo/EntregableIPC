@@ -25,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -34,6 +35,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import jfxtras.css.converters.IntegerConverter;
 import model.Days;
 import model.Doctor;
 import model.ExaminationRoom;
@@ -55,10 +58,6 @@ public class FXMLMedicosController implements Initializable {
     @FXML
     private TextField tfDNI;
     @FXML
-    private TextField tfDays;
-    @FXML
-    private TextField tfSala;
-    @FXML
     private TextField tfTelef;
 
     //Declaramos las tablas y las columnas
@@ -70,8 +69,6 @@ public class FXMLMedicosController implements Initializable {
     private TableColumn<Doctor, String> cognColumn;
     @FXML
     private TableColumn<Doctor, String> idColumn;
-    @FXML
-    private TableColumn<Doctor, Days> daysColumn;
     @FXML
     private TableColumn<Doctor, String> roomColumn;
     @FXML
@@ -86,7 +83,13 @@ public class FXMLMedicosController implements Initializable {
     private EntregableIPC app;
     public Stage primaryStage;
     private ObservableList<Doctor> medico;
+    private ObservableList<ExaminationRoom> rooms;
     private int pos;
+    @FXML
+    private ChoiceBox<ExaminationRoom> ddSalas;
+    @FXML
+    private TableColumn<?, ?> fotoColumn;
+    ClinicDBAccess dao;
 
     /**
      * Initializes the controller class.
@@ -95,8 +98,8 @@ public class FXMLMedicosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ClinicDBAccess mismedicos = ClinicDBAccess.getSingletonClinicDBAccess();
         this.medico = FXCollections.observableList(mismedicos.getDoctors());
+        this.rooms = FXCollections.observableList(mismedicos.getExaminationRooms());
         tvMedicos.setItems(medico);
-
         idColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIdentifier()));
         nomColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
         cognColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname()));
@@ -147,6 +150,8 @@ public class FXMLMedicosController implements Initializable {
 //                }
 //            };
 //        });
+
+   
         final ObservableList<Doctor> tablaDocSel = tvMedicos.getSelectionModel().getSelectedItems();
         tablaDocSel.addListener(selectorTablaDoctor);
 
@@ -158,9 +163,13 @@ public class FXMLMedicosController implements Initializable {
         this.app = app;
     }
 
-    public void initStage(Stage stage, ObservableList<Doctor> medico) {
+    public void initStage(Stage stage, ClinicDBAccess clinicDBAccess) {
         this.primaryStage = stage;
+        this.dao = clinicDBAccess;
         this.tvMedicos.setItems(medico);
+        List<ExaminationRoom> lsala = dao.getExaminationRooms();
+         this.ddSalas.getItems().addAll(lsala);
+          primaryStage.setResizable(false);
 
     }
 
@@ -169,11 +178,13 @@ public class FXMLMedicosController implements Initializable {
 //        ClinicDBAccess mispersonas = ClinicDBAccess.getSingletonClinicDBAccess();
 //        this.medico = FXCollections.observableList(mispersonas.getDoctors()) ; 
 //        tvMedicos.setItems(medico);
+
         Doctor persona = new Doctor();
         persona.setName(tfNombre.getText());
         persona.setSurname(tfApellidos.getText());
         persona.setIdentifier(tfDNI.getText());
         persona.setTelephon(tfTelef.getText());
+        persona.setExaminationRoom(ddSalas.getSelectionModel().getSelectedItem());
         medico.add(persona);
         this.tvMedicos.refresh();
         this.app.save();

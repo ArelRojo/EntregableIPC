@@ -6,8 +6,7 @@
 package app;
 
 import DBAccess.ClinicDBAccess;
-import controller.FXMLAddMedicoController;
-import controller.FXMLAddPacienteController;
+
 import controller.FXMLCalendarioController;
 import controller.FXMLMedicosController;
 import controller.FXMLPacientesController;
@@ -115,7 +114,7 @@ public class EntregableIPC extends Application {
         this.vbroot.getChildren().add((AnchorPane) loader.load());
         FXMLMedicosController medicosController = loader.getController();
         medicosController.setApp(this);
-        medicosController.initStage(stage, this.medico);
+        medicosController.initStage(stage, this.clinicDBAccess);
         stage.setTitle("Médicos");
     }
 
@@ -136,39 +135,7 @@ public class EntregableIPC extends Application {
         CalendarioController.initStage(stage, this.clinicDBAccess);
         stage.setTitle("Citas");
     }
-
-//    public void goToAddPaciente() throws Exception {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddPaciente.fxml"));
-//        FXMLAddPacienteController addcontrolador = loader.getController();
-//        Parent root = (Parent) loader.load();
-//        Stage estageActual = new Stage();
-//        Scene scene = new Scene(root);
-//        estageActual.setScene(scene);
-//        estageActual.initModality(Modality.APPLICATION_MODAL);
-//        estageActual.showAndWait();
-//    }
-//    public void goToAddMedico() throws Exception {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddMedico.fxml"));
-//        FXMLAddMedicoController addMcontrolador = loader.getController();
-//        Parent root = (Parent) loader.load();
-//        Stage estageActual = new Stage();
-//        Scene scene = new Scene(root);
-//        estageActual.setScene(scene);
-//        estageActual.initModality(Modality.APPLICATION_MODAL);
-//        estageActual.showAndWait();
-//
-//    }
-    public void goToAddCita() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAddCita.fxml"));
-        FXMLAddMedicoController addCcontrolador = loader.getController();
-        Parent root = (Parent) loader.load();
-        Stage estageActual = new Stage();
-        Scene scene = new Scene(root);
-        estageActual.setScene(scene);
-        estageActual.initModality(Modality.APPLICATION_MODAL);
-        estageActual.showAndWait();
-
-    }
+  
 
     public void save() {
         this.clinicDBAccess.saveDB();
