@@ -103,7 +103,7 @@ public class EntregableIPC extends Application {
         this.vbroot.getChildren().add((AnchorPane) loader.load());
         FXMLPacientesController pacienteController = loader.getController();
         pacienteController.setApp(this);
-        pacienteController.initStage(stage, this.paciente);
+        pacienteController.initStage(stage, clinicDBAccess);
         stage.setTitle("Pacientes");
 
     }
@@ -129,7 +129,7 @@ public class EntregableIPC extends Application {
 //        estageActual.setScene(scene);
 //        estageActual.initModality(Modality.APPLICATION_MODAL);
 //        estageActual.showAndWait();
-
+       
         CalendarioController.setApp(this);
 
         CalendarioController.initStage(stage, this.clinicDBAccess);

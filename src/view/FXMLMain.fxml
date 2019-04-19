@@ -31,7 +31,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
          <center>
             <VBox fx:id="pagincio" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: DFFDFF;" BorderPane.alignment="CENTER">
                <children>

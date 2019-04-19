@@ -8,19 +8,31 @@ package controller;
 import DBAccess.ClinicDBAccess;
 import app.EntregableIPC;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxListCell;
+import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import jfxtras.scene.control.LocalDateTimeTextField;
@@ -64,6 +76,17 @@ public class FXMLCalendarioController implements Initializable {
     List<Appointment> lcitas;
     @FXML
     private Button delete_bt;
+    AppointmentImplLocal agendaCita;
+    Agenda agenda;
+    @FXML
+    private BorderPane borderpane;
+    @FXML
+    private SplitPane splitpane;
+    @FXML
+    private AnchorPane anchorpane;
+    @FXML
+    private ListView<Appointment> lv_citas;
+     private ObservableList<Appointment> citas;
   
  
 
@@ -72,6 +95,33 @@ public class FXMLCalendarioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+           
+         ClinicDBAccess miscitas = ClinicDBAccess.getSingletonClinicDBAccess();
+        this.citas = FXCollections.observableList(miscitas.getAppointments());
+       
+        lv_citas.setItems(citas);
+        lv_citas.setCellFactory(new Callback<ListView<Appointment>, ListCell<Appointment>>(){
+            
+             @Override
+             public ListCell<Appointment> call(ListView<Appointment> param) {
+                return new TextFieldListCell<>(new StringConverter<Appointment>() {
+                    @Override
+                    public String toString(Appointment object) {
+                       return object.getAppointmentDateTime().toString();
+                    }
+
+                    @Override
+                    public Appointment fromString(String string) {
+                       return lv_citas.getItems().stream().filter(doctor -> doctor.getAppointmentDateTime().equals(string)).findFirst().orElse(null);
+                    }
+                } );
+             }
+        
+        
+        
+        
+        });
+        
         this.ddMedico.setConverter(new StringConverter<Doctor>(){
             @Override
             public String toString(Doctor object) {
@@ -111,7 +161,7 @@ public class FXMLCalendarioController implements Initializable {
         
         
         
-       
+   
 
     }
 
@@ -125,13 +175,13 @@ public class FXMLCalendarioController implements Initializable {
         this.primaryStage = stage;
         this.dao = clinicDBAccess;
         // TODO
-        Agenda agenda = new Agenda();
+        agenda = new Agenda();
+        
         this.vboxCalendar.getChildren().add(agenda);
         lLocalDateTimeTextField.localDateTimeProperty().bindBidirectional(agenda.displayedLocalDateTime());
         //Cargar citas
       lcitas = dao.getAppointments();
-
-        AppointmentImplLocal agendaCita = new AppointmentImplLocal();
+        agendaCita = new AppointmentImplLocal();
         //agenda.displa
 
         for (Appointment cita : lcitas) {
@@ -144,21 +194,48 @@ public class FXMLCalendarioController implements Initializable {
         
         this.ddMedico.getItems().addAll(this.dao.getDoctors());
         this.ddPaciente.getItems().addAll(this.dao.getPatients());
-        primaryStage.setResizable(false);
+       
+        
+//        borderpane.prefWidthProperty().bind(primaryStage.widthProperty());
+//        anchorpane.prefWidthProperty().bind(borderpane.widthProperty());
+//
+//           vboxCalendar.prefHeightProperty().bind(primaryStage.heightProperty());
+//        primaryStage.setResizable(false);
 
+    }
+        @FXML
+    private void deleteEvent(ActionEvent event){
+         int i = lv_citas.getSelectionModel().getSelectedIndex(); //elemento seleccionado
+        if (i > -1) {
+            citas.remove(i);//lo borra de la lista
+        }
+        lv_citas.getSelectionModel().clearSelection();
+        
+        this.lv_citas.refresh();
+       
+        this.app.save();
+        
+         agendaCita = new AppointmentImplLocal();
+        //agenda.displa
+        agenda.appointments().clear();
+        for (Appointment cita : lcitas) {
+            agendaCita.withStartLocalDateTime(cita.getAppointmentDateTime())
+                    .withEndLocalDateTime(cita.getAppointmentDateTime().plusMinutes(60))
+                    .withDescription(cita.getPatient().getName() + " " + cita.getPatient().getSurname());
+            agenda.appointments().add(agendaCita);
+            agendaCita = new AppointmentImplLocal();
+        }
+         this.agenda.refresh();
+
+        
     }
 
     @FXML
     private void addEvent(ActionEvent event) {
       
-//       StringConverter sc = new NumberStringConverter();
-//     String lbldate = datePicker.getValue().toString() + " " + ddHora + ":" + ddMinuto;
-//     ddHora.setConverter(sc);
-//     ddMinuto.setConverter(sc);
-//       
-//       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/mm/yy HH:mm");
-//       LocalDateTime formatDateTime = LocalDateTime.parse((CharSequence)(lbldate), formatter);
-//      
+//     
+    int resultHora = Integer.parseInt(ddHora.getValue());
+    int resultMinuto = Integer.parseInt(ddMinuto.getValue());
        
       
        
@@ -166,9 +243,22 @@ public class FXMLCalendarioController implements Initializable {
         
         cita.setDoctor(ddMedico.getValue());
         cita.setPatient(ddPaciente.getValue());
-//        cita.setAppointmentDateTime(formatDateTime);
-   
-        lcitas.add(cita);
+        cita.setAppointmentDateTime(LocalDateTime.of(datePicker.getValue(), LocalTime.of(resultHora, resultMinuto)));
+            agendaCita = new AppointmentImplLocal();
+            agendaCita.withStartLocalDateTime(cita.getAppointmentDateTime())
+                    .withEndLocalDateTime(cita.getAppointmentDateTime().plusMinutes(60))
+                    .withDescription(cita.getPatient().getName() + " " + cita.getPatient().getSurname());
+            agenda.appointments().add(agendaCita);
+            lcitas.add(cita);
+            this.lv_citas.refresh();
+            
+            this.dao.saveDB();
+            for(Appointment citaaux : lcitas){
+                System.out.println(citaaux.getAppointmentDateTime());
+            }
+            
+            this.agenda.refresh();
+            
         
         
      
@@ -185,8 +275,6 @@ public class FXMLCalendarioController implements Initializable {
          lLocalDateTimeTextField.setLocalDateTime(lLocalDateTimeTextField.getLocalDateTime().plusDays(7));
     }
 
-    @FXML
-    private void deleteEvent(ActionEvent event) {
-    }
+
 
 }

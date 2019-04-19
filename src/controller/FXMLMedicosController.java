@@ -34,6 +34,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import jfxtras.css.converters.IntegerConverter;
@@ -87,9 +89,13 @@ public class FXMLMedicosController implements Initializable {
     private int pos;
     @FXML
     private ChoiceBox<ExaminationRoom> ddSalas;
-    @FXML
-    private TableColumn<?, ?> fotoColumn;
     ClinicDBAccess dao;
+    @FXML
+    private AnchorPane anchorpane;
+    @FXML
+    private VBox vbox1;
+    @FXML
+    private VBox vbox;
 
     /**
      * Initializes the controller class.
@@ -105,6 +111,19 @@ public class FXMLMedicosController implements Initializable {
         cognColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname()));
         telColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTelephon()));
         roomColumn.setCellValueFactory(c -> new SimpleObjectProperty(c.getValue().getExaminationRoom().getIdentNumber()));
+        
+        this.ddSalas.setConverter(new StringConverter<ExaminationRoom>() {
+            @Override
+            public String toString(ExaminationRoom object) {
+                return object.getIdentNumber()+"";
+            }
+
+            @Override
+            public ExaminationRoom fromString(String string) {
+                Integer idsala = Integer.parseInt(string);
+                return ddSalas.getItems().stream().filter(sala -> new Integer(sala.getIdentNumber()).equals(idsala)).findFirst().orElse(null);
+            }
+        });
 //        horaIni.setCellValueFactory(new PropertyValueFactory<>("horaIniciodeTurno"));
 //        horaIni.setCellFactory((TableColumn<Doctor, LocalTime> column) -> {
 //            return new TableCell<Doctor, LocalTime>() {
@@ -168,8 +187,10 @@ public class FXMLMedicosController implements Initializable {
         this.dao = clinicDBAccess;
         this.tvMedicos.setItems(medico);
         List<ExaminationRoom> lsala = dao.getExaminationRooms();
-         this.ddSalas.getItems().addAll(lsala);
-          primaryStage.setResizable(false);
+        ddSalas.getItems().addAll(lsala);
+        tvMedicos.prefHeightProperty().bind(primaryStage.heightProperty());
+       
+        
 
     }
 

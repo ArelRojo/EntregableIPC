@@ -11,26 +11,37 @@ package controller;
 import DBAccess.ClinicDBAccess;
 import app.EntregableIPC;
 import java.net.URL;
+import java.util.List;
 
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import model.Patient;
 
@@ -67,6 +78,13 @@ public class FXMLPacientesController implements Initializable {
     private EntregableIPC app;
     private Stage primaryStage;
     private ObservableList<Patient> paciente;
+    @FXML
+    private AnchorPane anchorpane;
+    @FXML
+    private Pane panePac;
+    ClinicDBAccess dao;
+    @FXML
+    private ComboBox<Image> ddImage;
 
     /**
      * Initializes the controller class.
@@ -98,18 +116,54 @@ public class FXMLPacientesController implements Initializable {
                 }
             };
         });
+        
         BooleanBinding noPatientSelected = Bindings.isEmpty(tvPacientes.getSelectionModel().getSelectedItems());
         this.btDel.disableProperty().bind(noPatientSelected);
+       
     }
 
     public void setApp(EntregableIPC app) {
         this.app = app;
     }
 
-    public void initStage(Stage stage, ObservableList<Patient> paciente) {
+    public void initStage(Stage stage, ClinicDBAccess clinicDBAccess) {
         this.primaryStage = stage;
         this.tvPacientes.setItems(paciente);
-         primaryStage.setResizable(false);
+        this.dao = clinicDBAccess;
+        ddImage.setCellFactory(new Callback<ListView<Image>, ListCell<Image>>() {
+            @Override
+            public ListCell<Image> call(ListView<Image> param) {
+               return new ComboBoxListCell<Image>(){
+                   @Override
+                   public void updateItem(Image item, boolean empty){
+                    setText(null);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                    ImageView imageView = new ImageView(item);
+                    imageView.setFitHeight(40);
+                    imageView.setFitWidth(40);
+                    setGraphic(imageView);
+                   }
+               
+               
+               };
+            }
+        });
+        
+        
+     
+                       
+      
+      
+            
+      
+        
+
+       
+//        anchorpane.prefHeightProperty().bind(primaryStage.heightProperty());
+//        anchorpane.prefWidthProperty().bind(primaryStage.widthProperty());
+//        panePac.prefHeightProperty().bind(anchorpane.heightProperty());
+//        tvPacientes.prefHeightProperty().bind(panePac.heightProperty());
+//         primaryStage.setResizable(false);
     }
 
     @FXML
@@ -123,6 +177,7 @@ public class FXMLPacientesController implements Initializable {
         this.paciente.add(paciente);
         this.tvPacientes.refresh();
         this.app.save();
+        this.dao.saveDB();
     }
 
     @FXML
@@ -138,4 +193,6 @@ public class FXMLPacientesController implements Initializable {
         this.tvPacientes.refresh();
         this.app.save();
     }
+
+   
 }

@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  */
 public class mainController implements Initializable {
     
-    private Label label;
+//    private Label label;
     @FXML
     private MenuItem imPacientes;
     @FXML
@@ -43,7 +43,7 @@ public class mainController implements Initializable {
      
      public void initStage(Stage stage){
         this.primaryStage = stage;
-         primaryStage.setResizable(false);
+//         primaryStage.setResizable(false);
     }
     @FXML
     private void irPrincipalPressed(ActionEvent event) throws Exception{

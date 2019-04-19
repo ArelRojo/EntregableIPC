@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Separator?>
@@ -7,53 +8,109 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FXMLMedicosController">
+<AnchorPane fx:id="anchorpane" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FXMLMedicosController">
    <children>
-      <TableView fx:id="tvMedicos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="800.0" prefWidth="597.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="203.0" AnchorPane.topAnchor="0.0">
-        <columns>
-          <TableColumn fx:id="nomColumn" prefWidth="75.0" text="Nombre" />
-          <TableColumn fx:id="cognColumn" prefWidth="100.0" text="Apellidos" />
-            <TableColumn fx:id="idColumn" prefWidth="100.0" text="DNI" />
-            <TableColumn fx:id="roomColumn" prefWidth="81.0" text="Sala" />
-            <TableColumn fx:id="telColumn" prefWidth="107.0" text="Teléfono" />
-            <TableColumn fx:id="fotoColumn" prefWidth="132.0" text="Foto" />
-        </columns>
-      </TableView>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+         <children>
+            <VBox fx:id="vbox1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+               <children>
+                  <TableView fx:id="tvMedicos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="597.0">
+                    <columns>
+                      <TableColumn fx:id="nomColumn" prefWidth="75.0" text="Nombre" />
+                      <TableColumn fx:id="cognColumn" prefWidth="100.0" text="Apellidos" />
+                        <TableColumn fx:id="idColumn" prefWidth="100.0" text="DNI" />
+                        <TableColumn fx:id="roomColumn" prefWidth="81.0" text="Sala" />
+                        <TableColumn fx:id="telColumn" prefWidth="107.0" text="Teléfono" />
+                    </columns>
+                  </TableView>
+               </children>
+            </VBox>
+            <VBox fx:id="vbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="407.0" prefWidth="195.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre: " wrappingWidth="78.13671875">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="6.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="tfNombre" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="195.0">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Apellidos:" wrappingWidth="72.13671875">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="tfApellidos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="195.0">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DNI:" wrappingWidth="62.13671875">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="tfDNI" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="195.0">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono:" wrappingWidth="62.13671875">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="tfTelef" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="195.0">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sala:" wrappingWidth="170.13671875">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Text>
+                  <ChoiceBox fx:id="ddSalas" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="150.0">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </ChoiceBox>
+                  <Button fx:id="addButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#AddMedico" prefHeight="25.0" prefWidth="189.0" text="Añadir">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btDel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#delMedico" prefHeight="25.0" prefWidth="189.0" text="Eliminar">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
       <Separator layoutX="594.0" orientation="VERTICAL" prefHeight="800.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="594.0" AnchorPane.topAnchor="0.0" />
-      <Text layoutX="600.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre: " wrappingWidth="62.13671875">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <TextField fx:id="tfNombre" layoutX="600.0" layoutY="31.0" prefHeight="29.0" prefWidth="195.0" />
-      <Text layoutX="600.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellidos:" wrappingWidth="72.13671875">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <TextField fx:id="tfApellidos" layoutX="600.0" layoutY="80.0" prefHeight="29.0" prefWidth="195.0" />
-      <Text layoutX="600.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI:" wrappingWidth="62.13671875">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <TextField fx:id="tfDNI" layoutX="600.0" layoutY="129.0" prefHeight="29.0" prefWidth="195.0" />
-      <Text layoutX="600.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono:" wrappingWidth="62.13671875">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <TextField fx:id="tfTelef" layoutX="600.0" layoutY="178.0" prefHeight="29.0" prefWidth="195.0" />
-      <Button fx:id="addButton" layoutX="605.0" layoutY="323.0" mnemonicParsing="false" onAction="#AddMedico" prefHeight="25.0" prefWidth="189.0" text="Añadir" />
-      <Button fx:id="btDel" layoutX="605.0" layoutY="361.0" mnemonicParsing="false" onAction="#delMedico" prefHeight="25.0" prefWidth="189.0" text="Eliminar" />
-      <Text layoutX="600.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sala:" wrappingWidth="170.13671875">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Text>
-      <ChoiceBox fx:id="ddSalas" layoutX="605.0" layoutY="235.0" prefHeight="29.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
